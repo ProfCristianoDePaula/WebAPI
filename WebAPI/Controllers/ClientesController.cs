@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,6 +14,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]// Adiciona a anotação [Authorize] para proteger os endpoints do controlador, exigindo que o usuário esteja autenticado para acessar as rotas relacionadas aos clientes, garantindo que apenas usuários autorizados possam realizar operações de criação, leitura, atualização e exclusão de clientes]
     public class ClientesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
