@@ -17,18 +17,24 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // 3. Configurção de CORS para permitir requisições de origens específicas (opcional, mas recomendado para APIs)
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", policy =>
+builder.Services.AddCors
+(
+    options =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
-    });
-});
+        options.AddPolicy
+        (
+            "AllowAll", policy =>
+            {
+                policy.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+            }
+        );
+    }
+);
 
 // 4. Adicionar o Identity para autenticação e autorização (opcional, mas recomendado para APIs seguras)
-builder.Services.AddIdentityCore<IdentityUser>()
+builder.Services.AddIdentityApiEndpoints<IdentityUser>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 // 5. Configurar a autenticação e autorização (opcional, mas recomendado para APIs seguras)
@@ -42,8 +48,10 @@ app.MapOpenApi(); // Mapeia as rotas para os endpoints de documentação OpenAPI
 app.MapScalarApiReference(options =>
 {
     options.WithTitle("WebAPI - Prof. Cristiano de Paula")
-           .WithTheme(ScalarTheme.Moon);
+           .WithTheme(ScalarTheme.Default);
 }); // Mapeia as rotas para os endpoints de referência da API usando o Scalar, permitindo que os clientes da API possam acessar uma interface de referência interativa e personalizada para explorar os recursos da API, facilitando o entendimento dos endpoints disponíveis, os parâmetros esperados e as respostas retornadas pela API, além de fornecer uma experiência de usuário aprimorada para a documentação da API.
+
+//app.MapGet("/", () => Results.Redirect("/scalar"));
 
 app.UseHttpsRedirection(); // Redireciona todas as requisições HTTP para HTTPS para garantir a segurança da comunicação
 
